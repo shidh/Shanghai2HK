@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 
 import play.db.jpa.Model;
 
@@ -12,8 +13,12 @@ public class DailyStat extends Model{
 	
 	private String date;
 	private HashMap<String, String> table1;
+	
+	@OneToMany
 	private List<Stock> table2;
 	private HashMap<String, String> table3;
+	
+	@OneToMany
 	private List<Stock> table4;
 	
 	
