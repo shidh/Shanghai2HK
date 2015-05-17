@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
 import models.DailyStat;
 import models.Stock;
 
+import org.joda.time.LocalDate;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -28,14 +30,44 @@ import play.jobs.*;
 @On("0 15,35 17 ? * MON-FRI")
 public class UpdateData extends Job {
 	private static String baseUrl = "http://sc.hkex.com.hk/gb/www.hkex.com.hk/chi/csm/dailystat/";
-	//d20150401c
-	private static String dailyData = "d20150401c.htm";
-	
+	//private static String basedDate = "20150401";
+	//today as the default date to check
+	private static String dailyDataHtml = "d"+ setDate(new Date())+"c.htm";
+	private Date checkDate = new Date();
+
+	public void initDB(){
+		Logger.info("start to init DB");
+		List<Date> dates = new ArrayList<Date>();
+		Calendar cal = Calendar.getInstance();
+		
+		cal.set(Calendar.YEAR, 2015);
+		cal.set(Calendar.MONTH, Calendar.APRIL);
+		cal.set(Calendar.DAY_OF_MONTH, 1);
+		Date startDate = cal.getTime();
+
+		// year    the year minus 1900.
+		//Date startDate = new Date(115, 04, 01);
+
+		Logger.info(setDate(startDate));
+
+
+		//cal.setTime(startDate);
+		while (!cal.getTime().after(new Date())) {
+		    dates.add(cal.getTime());
+		    cal.add(Calendar.DATE, 1);
+		}
+		
+		for(Date date: dates){
+			dailyDataHtml = "d"+ setDate(date)+"c.htm";
+			Logger.info(dailyDataHtml);
+			checkDate = date;
+			doJob();
+		}
+	}
 	
 	public void doJob() {
         Logger.info("Maintenance job ...");
 
-		dailyData = "d"+setDate()+"c.htm";
 
 		Gson gson = new Gson();
 		Document doc = null;
@@ -48,13 +80,15 @@ public class UpdateData extends Job {
 		HashMap<String, String> table3 = new HashMap<String, String>();
 		List<Stock> table4 = new ArrayList<Stock>();
 	
-		
-		DailyStat data = DailyStat.find("byDate", setDate()).first();
+		Logger.info(setDate(checkDate));
+		DailyStat data = DailyStat.find("byDate", setDate(checkDate)).first();
 
 		//check if the data is already existing in DB
 		if(data == null){
+			Logger.info("begin to parse html");
 			try {
-				doc = Jsoup.connect(baseUrl + dailyData).get();
+				//dailyDataHtml = "d"+setDate(checkDate)+"c.htm";
+				doc = Jsoup.connect(baseUrl + dailyDataHtml).get();
 			
 				Elements tables = doc.select("td.bg3");
 			
@@ -151,7 +185,7 @@ public class UpdateData extends Job {
 				}
 				//all = time+"</br>"+table1+"</br>"+table2+"</br>"+table3+"</br>"+table4;
 				DailyStat daily = new DailyStat();
-				daily.setDate(setDate());
+				daily.setDate(setDate(checkDate));
 				daily.setTable1(table1);
 				daily.setTable2(table2);
 				daily.setTable3(table3);
@@ -160,28 +194,45 @@ public class UpdateData extends Job {
 				Logger.info("saved");
 			} catch (IOException e) {
 				e.printStackTrace();
-				Logger.warn("Probably " +  setDate() + " is holiday :)");
+				Logger.warn("Probably " +  setDate(checkDate) + " is holiday :)");
 				//renderText("Probably " +  setDate() + " is holiday :)");
 
 			}
 		}else{
-			Logger.info("The data for "+setDate()+" is already fetched.");
+			Logger.info("The data for "+ setDate(checkDate)+" is already fetched.");
 		}
 	
 	
-		if (table1 != null) {
-			Logger.info("Json to js: " + gson.toJson(table2));
+		if (!table2.isEmpty()) {
+			Logger.info("table2 Json to js: " + gson.toJson(table2));
 		} else {
+			Logger.info("table2 Json to js is empty " );
 		}
 
 	}
 
-	
+    public void onSuccess(){
+        Logger.info("fetch data"+ setDate(checkDate) + "done");
 
-	private static String setDate(){
+    }
+    
+    public void onException(Throwable e){
+    	e.printStackTrace();
+        Logger.warn("fetch data"+ setDate(checkDate) + "failed");
+
+    }
+
+	private static String setDate(Date date){
 	    DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-	    Date date = new Date();
 	    return(dateFormat.format(date));
+	}
+	
+	public static List<LocalDate> datesBetween(LocalDate start, LocalDate end) {
+	    List<LocalDate> ret = new ArrayList<LocalDate>();
+	    for (LocalDate date = start; !date.isAfter(end); date = date.plusDays(1)) {
+	        ret.add(date);
+	    }
+	    return ret;
 	}
 
 
