@@ -1,10 +1,19 @@
 package models;
 
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.Column;
+import javax.persistence.CollectionTable;
+import javax.persistence.JoinColumn;
 
 import play.db.jpa.Model;
 
@@ -12,16 +21,40 @@ import play.db.jpa.Model;
 public class DailyStat extends Model{
 	
 	private String date;
-	private HashMap<String, String> table1;
 	
-	@OneToMany
+	@ElementCollection
+    @MapKeyColumn(name="key")
+    @Column(name="value")
+    @CollectionTable(name="dailyStat_table1")
+	private Map<String, String> table1 = new HashMap<String, String>(); // maps from attribute key to value
+
+	
+	@OneToMany(mappedBy = "dailyDtat", cascade = CascadeType.ALL)
 	private List<Stock> table2;
-	private HashMap<String, String> table3;
 	
-	@OneToMany
+	@ElementCollection
+    @MapKeyColumn(name="name")
+    @Column(name="value")
+    @CollectionTable(name="dailyStat_table3")
+	private Map<String, String> table3 = new HashMap<String, String>();;
+	
+	@OneToMany(mappedBy = "dailyDtat", cascade = CascadeType.ALL)
 	private List<Stock> table4;
 	
+	public DailyStat(){
+		super();
+	}
 	
+	public DailyStat(String date, HashMap<String, String> table1,
+			List<Stock> table2, HashMap<String, String> table3,
+			List<Stock> table4) {
+		super();
+		this.date = date;
+		this.table1 = table1;
+		this.table2 = table2;
+		this.table3 = table3;
+		this.table4 = table4;
+	}
 	
 	public String getDate() {
 		return date;
@@ -30,7 +63,7 @@ public class DailyStat extends Model{
 		this.date = date;
 	}
 	
-	public HashMap<String, String> getTable1() {
+	public Map<String, String> getTable1() {
 		return table1;
 	}
 	public void setTable1(HashMap<String, String> table1) {
@@ -42,7 +75,7 @@ public class DailyStat extends Model{
 	public void setTable2(List<Stock> table2) {
 		this.table2 = table2;
 	}
-	public HashMap<String, String> getTable3() {
+	public Map<String, String> getTable3() {
 		return table3;
 	}
 	public void setTable3(HashMap<String, String> table3) {
