@@ -1,0 +1,8 @@
+.leftPanel{
+	max-height: 200px;
+	overflow-y: scroll;
+}
+
+.green{
+	color:#99cc00;
+}
