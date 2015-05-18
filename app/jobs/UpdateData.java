@@ -98,7 +98,7 @@ public class UpdateData extends Job {
 						Element date = table.select("font.font1").first();
 						if (date != null){
 							all = all + date+ "</br>";
-							time = date.text();
+							time = date.text().trim();
 						}
 					}
 				    Elements trs = table.select("tr");
@@ -113,7 +113,7 @@ public class UpdateData extends Job {
 						        trtd[i] = new String[tds.size()];
 						        for (int j = 0; j < tds.size(); j++) { // column number
 							    	//System.out.println("column "+j);
-						            trtd[i][j] = tds.get(j).text(); 
+						            trtd[i][j] = tds.get(j).text().trim(); 
 						            table1.put(trtd[i][0], trtd[i][1]);
 						        }
 						    }
@@ -127,7 +127,7 @@ public class UpdateData extends Job {
 						        
 						        Stock stock = new Stock();
 						        for (int j = 0; j < tds.size(); j++) { // column number
-						            trtd[i][j] = tds.get(j).text(); 
+						            trtd[i][j] = tds.get(j).text().trim(); 
 								    //all = all + trtd[i][j]+ "</br>";
 						        }
 						        stock.setDailyRanking(trtd[i][0]);
@@ -148,7 +148,7 @@ public class UpdateData extends Job {
 						        Elements tds = trs.get(i).select("td");
 						        trtd[i] = new String[tds.size()];
 						        for (int j = 0; j < tds.size(); j++) { // column number
-						            trtd[i][j] = tds.get(j).text(); 
+						            trtd[i][j] = tds.get(j).text().trim(); 
 						            table3.put(trtd[i][0], trtd[i][1]);
 						        }
 						    }
@@ -163,7 +163,7 @@ public class UpdateData extends Job {
 						        
 						        Stock stock = new Stock();
 						        for (int j = 0; j < tds.size(); j++) { // column number
-						            trtd[i][j] = tds.get(j).text(); 
+						            trtd[i][j] = tds.get(j).text().trim(); 
 								    //all = all + trtd[i][j]+ "</br>";
 						        }
 						        stock.setDailyRanking(trtd[i][0]);

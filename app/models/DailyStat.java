@@ -8,12 +8,14 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Column;
 import javax.persistence.CollectionTable;
 import javax.persistence.JoinColumn;
+import javax.xml.bind.annotation.XmlTransient;
 
 import play.db.jpa.Model;
 
@@ -28,8 +30,8 @@ public class DailyStat extends Model{
     @CollectionTable(name="dailyStat_table1")
 	private Map<String, String> table1 = new HashMap<String, String>(); // maps from attribute key to value
 
-	
-	@OneToMany(mappedBy = "dailyDtat", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "dailyDtat", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	@XmlTransient 
 	private List<Stock> table2;
 	
 	@ElementCollection

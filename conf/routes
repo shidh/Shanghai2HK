@@ -11,5 +11,12 @@ GET     /favicon.ico                            404
 # Map static resources from the /app/public folder to the /public path
 GET     /public/                                staticDir:public
 
+
+#Json of DailyData
+GET     /rest/daily                            	Application.daily
+
+GET     /rest/stocks                          	Application.stocks
+
+
 # Catch all
 *       /{controller}/{action}                  {controller}.{action}

@@ -14,7 +14,7 @@ public class Stock extends Model{
 	private String selling;
 	private String totalAmount;
 
-	@ManyToOne
+	//@ManyToOne
 	public DailyStat dailyDtat;
 	
 	public Stock(){
