@@ -16,18 +16,21 @@ function startOnclick(){
 	var map;
 	$("div#progressBar").show();
 	
-	xmlhttp.open("GET","Application/start",true);
+	xmlhttp.open("GET","Application/weekly",true);
 	xmlhttp.send();
 	
 	xmlhttp.onreadystatechange=function()
 	{
 	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
 	    {
-		  map=JSON.parse(xmlhttp.responseText);
+		  maps=JSON.parse(xmlhttp.responseText);
 	      $("div#progressBar").hide();
 		  //drawSeriesChart(map);
-	      alert(JSON.stringify(map));
-	
+	      //alert(JSON.stringify(map));
+	      alert(JSON.stringify(maps[0].table1));
+
+	      //drawAreaChart(map);
+	      drawColumnChart(maps) 
 	    }
 	  }
 }
@@ -49,15 +52,16 @@ function startOnclick(){
       
       google.setOnLoadCallback(drawColumnChart);
       
+     
+
       
       
-      function drawColumnChart() {
-
-
+      function drawColumnChart(maps) {
 			
     	var array = [];
+    	var i;
       	array[0] = ['Date', 'TotalTurnover', 'Buy', 'Sell'];
-      	i = 1;
+
 //        #{list items:DailyStats, as:'oneDay'}
 //        	if(i<6){}
 //	        	array[i] = [${oneDay.date}, ${oneDay.tables1.get("买入及卖出成交额 (RMB mil)")}, ${oneDay.tables1.get("买入成交额 (RMB mil)"}, ${oneDay.tables1.get("卖出成交额 (RMB mil)"} ];
@@ -68,10 +72,16 @@ function startOnclick(){
 //      		array[i] = ["cluster"+i, parseFloat(map["X"+i]), parseFloat(map["Y"+i]), parseFloat(map["RiskRate"+i]) ,parseInt(map["S"+i])];
 //      	}
 //      	
+      	for (i = 0; i < maps.length; i++) {
+      		daily = maps[i];
+      		array[i+1] = [daily.date+'', parseFloat(daily.table1['买入及卖出成交额 (RMB mil)']), parseFloat(daily.table1['     买入成交额 (RMB mil)']), parseFloat(daily.table1['     卖出成交额 (RMB mil)']) ];
+      	}
       	
       	var data;
-      	if(i > 2){
+      	if(array.length > 1){
       		data = google.visualization.arrayToDataTable(array);
+      		alert(array);
+
       	}else{
       		data = google.visualization.arrayToDataTable([
 	          ['Date', 'TotalTurnover', 'Buy', 'Sell'],
@@ -79,54 +89,59 @@ function startOnclick(){
 	          ['2015/04/02', 1170, 860, 310],
 	          ['2015/04/03', 660, 220, 440],
 	          ['2015/04/04', 1030, 530, 500]
+	          
 	        ]);
+      	}
 	
 	        var options = {
 	          chart: {
-	            title: 'Company Performance',
-	            subtitle: 'Sales, Expenses, and Profit: 2014-2017',
+	            title: '沪股通-每周买入卖出额',
+	            //subtitle: 'Sales, Expenses, and Profit: 2014-2017',
 	          },
-	          trendlines: {
-	              0: {
-	                type: 'linear',
-	                color: 'green',
-	                lineWidth: 3,
-	                opacity: 0.3,
-	                showR2: true,
-	                visibleInLegend: true
-	              }
+	          axes: {
+	            x: {
+	              0: { side: 'top', label: 'White to move'} // Top x-axis.
 	            }
+	          },
+	          bar: { groupWidth: "90%" }
+//	          trendlines: {
+//	              0: {
+//	                type: 'linear',
+//	                color: 'green',
+//	                lineWidth: 3,
+//	                opacity: 0.3,
+//	                showR2: true,
+//	                visibleInLegend: true
+//	              }
+//	            }
 	        };
 	
 	        var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
 	
 	        chart.draw(data, options);
-	      }
+	      
       	}
       
       
       
-      
-      
-      function drawAreaChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['Year', 'Sales', 'Expenses'],
-          ['2013',  1000,      400],
-          ['2014',  1170,      460],
-          ['2015',  660,       1120],
-          ['2016',  1030,      540]
-        ]);
+      function drawAreaChart(map) {
+          var data = google.visualization.arrayToDataTable([
+            ['Year', 'Sales', 'Expenses'],
+            ['2013',  1000,      400],
+            ['2014',  1170,      460],
+            ['2015',  660,       1120],
+            ['2016',  1030,      540]
+          ]);
 
-        var options = {
-          title: 'Company Performance',
-          hAxis: {title: 'Year',  titleTextStyle: {color: '#333'}},
-          vAxis: {minValue: 0}
-        };
+          var options = {
+            title: 'Company Performance',
+            hAxis: {title: 'Year',  titleTextStyle: {color: '#333'}},
+            vAxis: {minValue: 0}
+          };
 
-        var chart = new google.visualization.AreaChart(document.getElementById('areaChart_div'));
-        chart.draw(data, options);
-      }
-      
+          var chart = new google.visualization.AreaChart(document.getElementById('areaChart_div'));
+          chart.draw(data, options);
+        }
       
       
       function drawSeriesChart(map) {

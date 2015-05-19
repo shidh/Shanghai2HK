@@ -1,14 +1,12 @@
 #{extends 'main.html' /}
 #{set title:'Home' /}
 
-
-
 	<div class="container-fluid">
-		
-
 		<div class="col-md-8">
 		    #{list items:DailyStats, as:'oneDay'}
-						${oneDay.date}
+		    			${oneDay.date}
+		    
+						${oneDay.table1.get("买入及卖出成交额 (RMB mil)")}
             #{/list}
 			<button type="submit" class="btn btn-primary btn-block" onclick="startOnclick();">GetJson</button>
 		
@@ -21,18 +19,24 @@
 			   </div>
 			</div>
 
+			<!--Div that will hold the columnChart-->
+   			 <div id="columnchart_material" style="width: 900px; height: 500px;"></div>
+   			 
 	    	<!--Div that will hold the areaChart-->
    			 <div id=areaChart_div style="width: 900px; height: 500px;"></div>
    			 
-   			<!--Div that will hold the columnChart-->
-   			 <div id="columnchart_material" style="width: 900px; height: 500px;"></div>
    			 
     		<!--Div that will hold the BubbleChart
-    		<div id="series_chart_div" style="width: 800px; height: 600px;"></div>
+    		<div id="series_chart_div" style="width: 800px; height: 600px;">
+    		</div>
     		-->
 		</div>
 	</div>
 
-
 <script type="text/javascript" src="public/javascripts/index.js"></script>
 <link rel="stylesheet" media="screen" href="@{'/public/stylesheets/index.css'}">
+
+
+
+
+            
