@@ -2,12 +2,14 @@ package jobs;
 
 import java.io.IOException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import models.DailyStat;
 import models.Stock;
@@ -71,7 +73,7 @@ public class UpdateData extends Job {
 
 		Gson gson = new Gson();
 		Document doc = null;
-		String time = "";
+		Date date = null;
 		String all ="";
 		int numberOfTable = 1;
 		
@@ -81,7 +83,7 @@ public class UpdateData extends Job {
 		List<Stock> table4 = new ArrayList<Stock>();
 	
 		Logger.info(setDate(checkDate));
-		DailyStat data = DailyStat.find("byDate", setDate(checkDate)).first();
+		DailyStat data = DailyStat.find("byDate", checkDate).first();
 
 		//check if the data is already existing in DB
 		if(data == null){
@@ -95,10 +97,16 @@ public class UpdateData extends Job {
 				//Elements tables = doc.select("table");
 				for (Element table : tables) {
 					if(numberOfTable == 3){
-						Element date = table.select("font.font1").first();
-						if (date != null){
-							all = all + date+ "</br>";
-							time = date.text().trim();
+						Element time = table.select("font.font1").first();
+						if (time != null){
+							all = all + time+ "</br>";
+							DateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+							try {
+								date = format.parse(time.text().split(":")[1]);
+							} catch (ParseException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 						}
 					}
 				    Elements trs = table.select("tr");
@@ -130,6 +138,7 @@ public class UpdateData extends Job {
 						            trtd[i][j] = tds.get(j).text().trim(); 
 								    //all = all + trtd[i][j]+ "</br>";
 						        }
+						        stock.setDate(date);
 						        stock.setDailyRanking(trtd[i][0]);
 					            stock.setStockCode(trtd[i][1]);
 					            stock.setStockName(trtd[i][2].trim());
@@ -166,6 +175,7 @@ public class UpdateData extends Job {
 						            trtd[i][j] = tds.get(j).text().trim(); 
 								    //all = all + trtd[i][j]+ "</br>";
 						        }
+						        stock.setDate(date);
 						        stock.setDailyRanking(trtd[i][0]);
 					            stock.setStockCode(trtd[i][1]);
 					            stock.setStockName(trtd[i][2].trim());
@@ -185,7 +195,7 @@ public class UpdateData extends Job {
 				}
 				//all = time+"</br>"+table1+"</br>"+table2+"</br>"+table3+"</br>"+table4;
 				DailyStat daily = new DailyStat();
-				daily.setDate(setDate(checkDate));
+				daily.setDate(date);
 				daily.setTable1(table1);
 				daily.setTable2(table2);
 				daily.setTable3(table3);

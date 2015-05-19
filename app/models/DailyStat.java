@@ -22,7 +22,7 @@ import play.db.jpa.Model;
 @Entity
 public class DailyStat extends Model{
 	
-	private String date;
+	private Date date;
 	
 	@ElementCollection
     @MapKeyColumn(name="key")
@@ -47,7 +47,7 @@ public class DailyStat extends Model{
 		super();
 	}
 	
-	public DailyStat(String date, HashMap<String, String> table1,
+	public DailyStat(Date date, HashMap<String, String> table1,
 			List<Stock> table2, HashMap<String, String> table3,
 			List<Stock> table4) {
 		super();
@@ -58,10 +58,10 @@ public class DailyStat extends Model{
 		this.table4 = table4;
 	}
 	
-	public String getDate() {
+	public Date getDate() {
 		return date;
 	}
-	public void setDate(String date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 	

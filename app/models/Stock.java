@@ -1,5 +1,7 @@
 package models;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
@@ -7,6 +9,7 @@ import play.db.jpa.Model;
 
 @Entity
 public class Stock extends Model{
+	private Date date;
 	private String dailyRanking;
 	private String stockCode;
 	private String stockName;
@@ -23,6 +26,18 @@ public class Stock extends Model{
 
 	
 	
+	public Date getDate() {
+		return date;
+	}
+
+
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+
+
 	public DailyStat getDailyDtat() {
 		return dailyDtat;
 	}

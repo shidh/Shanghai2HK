@@ -23,9 +23,13 @@ public class Application extends Controller {
 	
     public static void index() {
     	Gson gson = new Gson();
-    	List<DailyStat> DailyStats = DailyStat.findAll();
-    	
-    	
+    	//List<DailyStat> DailyStats = DailyStat.findAll();
+    	//List<DailyStat> DailyStats = DailyStat.all().fetch(5);
+    	int statsCount = (int) DailyStat.count();
+
+    	List<DailyStat> DailyStats = DailyStat.all().from(statsCount-5).fetch(5);
+
+
 		if (DailyStats != null) {
 			Logger.info("DailyStats Json to js: " + gson.toJson(DailyStats));
 			//renderJSON(gson.toJson(DailyStats));
@@ -40,6 +44,20 @@ public class Application extends Controller {
     	Gson gson = new Gson();
     	List<DailyStat> DailyStats = DailyStat.findAll();
     	
+    	
+		if (DailyStats != null) {
+			Logger.info("DailyStats Json to js: " + gson.toJson(DailyStats));
+			renderJSON(gson.toJson(DailyStats));
+		} else {
+			renderHtml("empty");
+		}
+		//render(all);
+    }
+    
+    public static void weekly() {
+    	Gson gson = new Gson();
+    	int statsCount = (int) DailyStat.count();
+    	List<DailyStat> DailyStats = DailyStat.all().from(statsCount-5).fetch(5);    	
     	
 		if (DailyStats != null) {
 			Logger.info("DailyStats Json to js: " + gson.toJson(DailyStats));
@@ -76,7 +94,6 @@ public class Application extends Controller {
 			} else {
 				renderHtml("empty");
 			}
-
 	}
     
     public static void updateDataNow() {
