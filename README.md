@@ -1,2 +1,2 @@
 # Shanghai2HK
-ShangHai Hong Kong stick connect daily statistics
+ShangHai Hong Kong stock connect daily statistics
