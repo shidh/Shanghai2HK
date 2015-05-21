@@ -13,9 +13,9 @@ public class Stock extends Model{
 	private String dailyRanking;
 	private String stockCode;
 	private String stockName;
-	private String buying;
-	private String selling;
-	private String totalAmount;
+	private Number buying;
+	private Number selling;
+	private Number totalAmount;
 
 	//@ManyToOne
 	public DailyStat dailyDtat;
@@ -74,27 +74,27 @@ public class Stock extends Model{
 		this.stockName = stockName;
 	}
 
-	public String getBuying() {
+	public Number getBuying() {
 		return buying;
 	}
 
-	public void setBuying(String buying) {
+	public void setBuying(Number buying) {
 		this.buying = buying;
 	}
 
-	public String getSelling() {
+	public Number getSelling() {
 		return selling;
 	}
 
-	public void setSelling(String selling) {
+	public void setSelling(Number selling) {
 		this.selling = selling;
 	}
 
-	public String getTotalAmount() {
+	public Number getTotalAmount() {
 		return totalAmount;
 	}
 
-	public void setTotalAmount(String totalAmount) {
+	public void setTotalAmount(Number totalAmount) {
 		this.totalAmount = totalAmount;
 	}
 	

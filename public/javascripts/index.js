@@ -1,9 +1,5 @@
 
-
-/**
- * parse json
- */
-function startOnclick(){
+$(document).ready(function(){
 	if (window.XMLHttpRequest)
 	  {// code for IE7+, Firefox, Chrome, Opera, Safari
 	  xmlhttp=new XMLHttpRequest();
@@ -27,7 +23,39 @@ function startOnclick(){
 	      $("div#progressBar").hide();
 		  //drawSeriesChart(map);
 	      //alert(JSON.stringify(map));
-	      alert(JSON.stringify(maps[0].table1));
+	      //alert(JSON.stringify(maps[0].date));
+
+	      //drawAreaChart(map);
+	      drawColumnChart(maps) 
+	    }
+	  }
+});
+
+function weeklyOnclick(){
+	if (window.XMLHttpRequest)
+	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttp=new XMLHttpRequest();
+	  }
+	else
+	  {// code for IE6, IE5
+	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+
+	var map;
+	$("div#progressBar").show();
+	
+	xmlhttp.open("GET","Application/weekly",true);
+	xmlhttp.send();
+	
+	xmlhttp.onreadystatechange=function()
+	{
+	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	    {
+		  maps=JSON.parse(xmlhttp.responseText);
+	      $("div#progressBar").hide();
+		  //drawSeriesChart(map);
+	      //alert(JSON.stringify(map));
+	      //alert(JSON.stringify(maps[0].table1));
 
 	      //drawAreaChart(map);
 	      drawColumnChart(maps) 
@@ -35,6 +63,72 @@ function startOnclick(){
 	  }
 }
 
+/**
+ * parse json
+ */
+function monthlyOnclick(){
+	if (window.XMLHttpRequest)
+	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttp=new XMLHttpRequest();
+	  }
+	else
+	  {// code for IE6, IE5
+	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+
+	var map;
+	$("div#progressBar").show();
+	
+	xmlhttp.open("GET","Application/monthly",true);
+	xmlhttp.send();
+	
+	xmlhttp.onreadystatechange=function()
+	{
+	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	    {
+		  maps=JSON.parse(xmlhttp.responseText);
+	      $("div#progressBar").hide();
+		  //drawSeriesChart(map);
+	      //alert(JSON.stringify(map));
+	      //alert(JSON.stringify(maps[0].table1));
+
+	      //drawAreaChart(map);
+	      drawColumnChart(maps) 
+	    }
+	  }
+}
+
+function  allOnclick(){
+	if (window.XMLHttpRequest)
+	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttp=new XMLHttpRequest();
+	  }
+	else
+	  {// code for IE6, IE5
+	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+
+	var map;
+	$("div#progressBar").show();
+	
+	xmlhttp.open("GET","Application/all",true);
+	xmlhttp.send();
+	
+	xmlhttp.onreadystatechange=function()
+	{
+	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	    {
+		  maps=JSON.parse(xmlhttp.responseText);
+	      $("div#progressBar").hide();
+		  //drawSeriesChart(map);
+	      //alert(JSON.stringify(map));
+	      //alert(JSON.stringify(maps[0].table1));
+
+	      //drawAreaChart(map);
+	      drawColumnChart(maps) 
+	    }
+	  }
+}
 
 /**
  * 
@@ -60,60 +154,38 @@ function startOnclick(){
 			
     	var array = [];
     	var i;
-      	array[0] = ['Date', 'TotalTurnover', 'Buy', 'Sell'];
-
-//        #{list items:DailyStats, as:'oneDay'}
-//        	if(i<6){}
-//	        	array[i] = [${oneDay.date}, ${oneDay.tables1.get("买入及卖出成交额 (RMB mil)")}, ${oneDay.tables1.get("买入成交额 (RMB mil)"}, ${oneDay.tables1.get("卖出成交额 (RMB mil)"} ];
-//	        	i++;
-//        	}
-//        #{/list}
-//      	for (i = 1; i <= k; i++) { 
-//      		array[i] = ["cluster"+i, parseFloat(map["X"+i]), parseFloat(map["Y"+i]), parseFloat(map["RiskRate"+i]) ,parseInt(map["S"+i])];
-//      	}
-//      	
+      	array[0] = ['日期', '买入卖出总共成交额(million RMB)', '买入成交额(million RMB)', '卖出成交额(million RMB)'];
       	for (i = 0; i < maps.length; i++) {
       		daily = maps[i];
-      		array[i+1] = [daily.date+'', parseFloat(daily.table1['买入及卖出成交额 (RMB mil)']), parseFloat(daily.table1['     买入成交额 (RMB mil)']), parseFloat(daily.table1['     卖出成交额 (RMB mil)']) ];
-      	}
-      	
-      	var data;
-      	if(array.length > 1){
-      		data = google.visualization.arrayToDataTable(array);
-      		alert(array);
+      		var d = new Date(daily.date);
+      		var month = d.getMonth() + 1;
 
-      	}else{
-      		data = google.visualization.arrayToDataTable([
-	          ['Date', 'TotalTurnover', 'Buy', 'Sell'],
-	          ['2015/04/01', 1000, 400, 600],
-	          ['2015/04/02', 1170, 860, 310],
-	          ['2015/04/03', 660, 220, 440],
-	          ['2015/04/04', 1030, 530, 500]
-	          
-	        ]);
+      		array[i+1] = [d.getFullYear()+"/"+month+"/"+ d.getDate()+'', daily.table1['买入及卖出成交额 (RMB mil)'], daily.table1['     买入成交额 (RMB mil)'], daily.table1['     卖出成交额 (RMB mil)'] ];
       	}
-	
+
+      		var data = google.visualization.arrayToDataTable(array);
 	        var options = {
 	          chart: {
 	            title: '沪股通-每周买入卖出额',
 	            //subtitle: 'Sales, Expenses, and Profit: 2014-2017',
 	          },
-	          axes: {
-	            x: {
-	              0: { side: 'top', label: 'White to move'} // Top x-axis.
-	            }
-	          },
-	          bar: { groupWidth: "90%" }
-//	          trendlines: {
-//	              0: {
-//	                type: 'linear',
-//	                color: 'green',
-//	                lineWidth: 3,
-//	                opacity: 0.3,
-//	                showR2: true,
-//	                visibleInLegend: true
-//	              }
+//	          axes: {
+//	            x: {
+//	              0: { side: 'top', label: 'White to move'} // Top x-axis.
 //	            }
+//	          },
+//	          bar: { groupWidth: "90%" }
+	          chartArea:{left:20,top:0,width:'100%',height:'100%'},
+	          trendlines: {
+	              0: {
+	                type: 'linear',
+	                color: 'green',
+	                lineWidth: 3,
+	                opacity: 0.3,
+	                showR2: true,
+	                visibleInLegend: true
+	              }
+	            }
 	        };
 	
 	        var chart = new google.charts.Bar(document.getElementById('columnchart_material'));

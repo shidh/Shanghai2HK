@@ -25,47 +25,115 @@ public class Application extends Controller {
     	Gson gson = new Gson();
     	//List<DailyStat> DailyStats = DailyStat.findAll();
     	//List<DailyStat> DailyStats = DailyStat.all().fetch(5);
+
     	int statsCount = (int) DailyStat.count();
-
-    	List<DailyStat> DailyStats = DailyStat.all().from(statsCount-5).fetch(5);
-
-
-		if (DailyStats != null) {
-			Logger.info("DailyStats Json to js: " + gson.toJson(DailyStats));
-			//renderJSON(gson.toJson(DailyStats));
-			render(DailyStats);
+    	List<DailyStat> dailyStats = DailyStat.all().from(statsCount-10).fetch(5);
+		
+		
+		
+		if (dailyStats != null) {
+			//Logger.info("DailyStats Json to js: " + gson.toJson(dailyStats));
+			//renderJSON(gson.toJson(dailyStats));
+			render(dailyStats);
 		} else {
 			renderHtml("empty");
 		}
-		//render(all);
     }
     
-    public static void daily() {
-    	Gson gson = new Gson();
-    	List<DailyStat> DailyStats = DailyStat.findAll();
-    	
-    	
-		if (DailyStats != null) {
-			Logger.info("DailyStats Json to js: " + gson.toJson(DailyStats));
-			renderJSON(gson.toJson(DailyStats));
+    public static void monthly() {
+       	Gson gson = new Gson();
+    	//List<DailyStat> DailyStats = DailyStat.findAll();
+    	//List<DailyStat> DailyStats = DailyStat.all().fetch(5);
+
+    	int statsCount = (int) DailyStat.count();
+    	List<DailyStat> dailyStats = DailyStat.all().from(statsCount-21).fetch(21);
+		
+		
+		
+		if (dailyStats != null) {
+			Logger.info("DailyStats Json to js: " + gson.toJson(dailyStats));
+			renderJSON(gson.toJson(dailyStats));
+			//render(dailyStats);
 		} else {
 			renderHtml("empty");
 		}
-		//render(all);
     }
     
     public static void weekly() {
-    	Gson gson = new Gson();
+       	Gson gson = new Gson();
+    	//List<DailyStat> DailyStats = DailyStat.findAll();
+    	//List<DailyStat> DailyStats = DailyStat.all().fetch(5);
+
     	int statsCount = (int) DailyStat.count();
-    	List<DailyStat> DailyStats = DailyStat.all().from(statsCount-5).fetch(5);    	
-    	
-		if (DailyStats != null) {
-			Logger.info("DailyStats Json to js: " + gson.toJson(DailyStats));
-			renderJSON(gson.toJson(DailyStats));
+    	List<DailyStat> dailyStats = DailyStat.all().from(statsCount-5).fetch(5);
+		
+		
+		
+		if (dailyStats != null) {
+			Logger.info("DailyStats Json to js: " + gson.toJson(dailyStats));
+			renderJSON(gson.toJson(dailyStats));
+			//render(dailyStats);
 		} else {
 			renderHtml("empty");
 		}
-		//render(all);
+    }
+    
+    public static void all() {
+       	Gson gson = new Gson();
+    	List<DailyStat> dailyStats = DailyStat.findAll();
+		
+		if (dailyStats != null) {
+			Logger.info("DailyStats Json to js: " + gson.toJson(dailyStats));
+			renderJSON(gson.toJson(dailyStats));
+			//render(dailyStats);
+		} else {
+			renderHtml("empty");
+		}
+    }
+    
+    
+    public static void DatesBetween() {
+		Gson gson = new Gson();
+	    Calendar cal = Calendar.getInstance();
+	
+		int statsCount = (int) DailyStat.count();
+		//List<DailyStat> DailyStats = DailyStat.all().from(statsCount-5).fetch(5);
+	
+		List<DailyStat> dailyStats = new ArrayList<DailyStat>();
+		List<Date> dates = new ArrayList<Date>();
+		
+//		cal.set(Calendar.YEAR, 2015);
+//		cal.set(Calendar.MONTH, Calendar.MAY);
+//		cal.set(Calendar.DAY_OF_MONTH, 13);	
+//		Date startDate = cal.getTime();
+
+		cal.add(Calendar.DATE, -7);
+		
+		//today
+		Date endDate = new Date();
+	
+		
+		while (cal.getTime().before(endDate)) {
+		    dates.add(cal.getTime());
+		    cal.add(Calendar.DATE, 1);
+		}
+		
+		for(Date date: dates){
+			DailyStat checkDate = DailyStat.find("byDate", date).first();
+			if(checkDate != null){
+				dailyStats.add(checkDate);
+			}
+		}
+		
+		
+		
+		if (dailyStats.size() >0) {
+			Logger.info("DailyStats Json to js: " + gson.toJson(dailyStats));
+			renderJSON(gson.toJson(dailyStats));
+			//render(DailyStats);
+		} else {
+			renderHtml("empty");
+		}
     }
     
     public static void stocks() {
@@ -87,10 +155,10 @@ public class Application extends Controller {
 	 */
 	public static void start() {
 		Gson gson = new Gson();
-	 	List<DailyStat> DailyStats = DailyStat.findAll();
-			if (DailyStats != null) {
-				Logger.info("DailyStats Json to js: " + gson.toJson(DailyStats));
-				renderJSON(gson.toJson(DailyStats));
+	 	List<DailyStat> dailyStats = DailyStat.findAll();
+			if (dailyStats != null) {
+				Logger.info("DailyStats Json to js: " + gson.toJson(dailyStats));
+				renderJSON(gson.toJson(dailyStats));
 			} else {
 				renderHtml("empty");
 			}

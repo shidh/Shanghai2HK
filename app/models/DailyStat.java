@@ -28,7 +28,7 @@ public class DailyStat extends Model{
     @MapKeyColumn(name="key")
     @Column(name="value")
     @CollectionTable(name="dailyStat_table1")
-	private Map<String, String> table1 = new HashMap<String, String>(); // maps from attribute key to value
+	private Map<String, Number> table1 = new HashMap<String, Number>(); // maps from attribute key to value
 
 	@OneToMany(mappedBy = "dailyDtat", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	@XmlTransient 
@@ -38,7 +38,7 @@ public class DailyStat extends Model{
     @MapKeyColumn(name="name")
     @Column(name="value")
     @CollectionTable(name="dailyStat_table3")
-	private Map<String, String> table3 = new HashMap<String, String>();;
+	private Map<String, Number> table3 = new HashMap<String, Number>();;
 	
 	@OneToMany(mappedBy = "dailyDtat", cascade = CascadeType.ALL)
 	private List<Stock> table4;
@@ -47,8 +47,8 @@ public class DailyStat extends Model{
 		super();
 	}
 	
-	public DailyStat(Date date, HashMap<String, String> table1,
-			List<Stock> table2, HashMap<String, String> table3,
+	public DailyStat(Date date, HashMap<String, Number> table1,
+			List<Stock> table2, HashMap<String, Number> table3,
 			List<Stock> table4) {
 		super();
 		this.date = date;
@@ -65,10 +65,10 @@ public class DailyStat extends Model{
 		this.date = date;
 	}
 	
-	public Map<String, String> getTable1() {
+	public Map<String, Number> getTable1() {
 		return table1;
 	}
-	public void setTable1(HashMap<String, String> table1) {
+	public void setTable1(HashMap<String, Number> table1) {
 		this.table1 = table1;
 	}
 	public List<Stock> getTable2() {
@@ -77,10 +77,10 @@ public class DailyStat extends Model{
 	public void setTable2(List<Stock> table2) {
 		this.table2 = table2;
 	}
-	public Map<String, String> getTable3() {
+	public Map<String, Number> getTable3() {
 		return table3;
 	}
-	public void setTable3(HashMap<String, String> table3) {
+	public void setTable3(HashMap<String, Number> table3) {
 		this.table3 = table3;
 	}
 	public List<Stock> getTable4() {

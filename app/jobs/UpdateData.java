@@ -2,6 +2,8 @@ package jobs;
 
 import java.io.IOException;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -77,9 +79,9 @@ public class UpdateData extends Job {
 		String all ="";
 		int numberOfTable = 1;
 		
-		HashMap<String, String> table1 = new HashMap<String, String>();
+		HashMap<String, Number> table1 = new HashMap<String, Number>();
 		List<Stock> table2 = new ArrayList<Stock>();
-		HashMap<String, String> table3 = new HashMap<String, String>();
+		HashMap<String, Number> table3 = new HashMap<String, Number>();
 		List<Stock> table4 = new ArrayList<Stock>();
 	
 		Logger.info(setDate(checkDate));
@@ -122,7 +124,7 @@ public class UpdateData extends Job {
 						        for (int j = 0; j < tds.size(); j++) { // column number
 							    	//System.out.println("column "+j);
 						            trtd[i][j] = tds.get(j).text().trim(); 
-						            table1.put(trtd[i][0], trtd[i][1]);
+						            table1.put(trtd[i][0], getNumber(trtd[i][1]));
 						        }
 						    }
 						}
@@ -142,9 +144,9 @@ public class UpdateData extends Job {
 						        stock.setDailyRanking(trtd[i][0]);
 					            stock.setStockCode(trtd[i][1]);
 					            stock.setStockName(trtd[i][2].trim());
-					            stock.setBuying(trtd[i][3]);
-					            stock.setSelling(trtd[i][4]);
-					            stock.setTotalAmount(trtd[i][5]);
+					            stock.setBuying(getNumber(trtd[i][3]));
+					            stock.setSelling(getNumber(trtd[i][4]));
+					            stock.setTotalAmount(getNumber(trtd[i][5]));
 					            table2.add(stock);
 					            stock.save();
 						    }
@@ -158,7 +160,7 @@ public class UpdateData extends Job {
 						        trtd[i] = new String[tds.size()];
 						        for (int j = 0; j < tds.size(); j++) { // column number
 						            trtd[i][j] = tds.get(j).text().trim(); 
-						            table3.put(trtd[i][0], trtd[i][1]);
+						            table3.put(trtd[i][0], getNumber(trtd[i][1]));
 						        }
 						    }
 						}
@@ -179,9 +181,9 @@ public class UpdateData extends Job {
 						        stock.setDailyRanking(trtd[i][0]);
 					            stock.setStockCode(trtd[i][1]);
 					            stock.setStockName(trtd[i][2].trim());
-					            stock.setBuying(trtd[i][3]);
-					            stock.setSelling(trtd[i][4]);
-					            stock.setTotalAmount(trtd[i][5]);
+					            stock.setBuying(getNumber(trtd[i][3]));
+					            stock.setSelling(getNumber(trtd[i][4]));
+					            stock.setTotalAmount(getNumber(trtd[i][5]));
 					            table4.add(stock);
 					            stock.save();
 						    }
@@ -235,6 +237,29 @@ public class UpdateData extends Job {
 	private static String setDate(Date date){
 	    DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 	    return(dateFormat.format(date));
+	}
+	
+	private static Number getNumber(String bigNumber) {
+//		String number = "1000500000.574";
+//		double amount = Double.parseDouble(bigNumber);
+//		DecimalFormat formatter = new DecimalFormat("#,###.00");
+//		return amount;
+		if (bigNumber == null ){
+			return 0;
+		} else{
+			Logger.info("bignumber: "+bigNumber);
+			NumberFormat format = NumberFormat.getInstance(Locale.US);
+		    Number number = 0;
+			try {
+				number = format.parse(bigNumber);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			Logger.info(" "+number);
+	
+			return number;
+		}
 	}
 	
 	public static List<LocalDate> datesBetween(LocalDate start, LocalDate end) {

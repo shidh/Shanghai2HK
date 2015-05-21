@@ -1,15 +1,19 @@
 #{extends 'main.html' /}
 #{set title:'Home' /}
 
-	<div class="container-fluid">
-		<div class="col-md-8">
+	<div class="container">
+		<!--<div class="col-md-8">-->
 		    #{list items:DailyStats, as:'oneDay'}
 		    			${oneDay.date}
 		    
 						${oneDay.table1.get("买入及卖出成交额 (RMB mil)")}
             #{/list}
-			<button type="submit" class="btn btn-primary btn-block" onclick="startOnclick();">GetJson</button>
-		
+            
+            <button type="submit" class="btn btn-primary " onclick="weeklyOnclick();">最近一周</button>
+			<button type="submit" class="btn btn-primary " onclick="monthlyOnclick();">最近一月</button>
+			<button type="submit" class="btn btn-primary " onclick="allOnclick();">全部</button>
+
+			<hr>
 			<!--Div that will hold the progress bar -->
 			<div id=progressBar class="progress progress-striped active" style="display:none;">
 			   <div id="progress2" class="progress-bar progress-bar-success" role="progressbar" 
@@ -20,7 +24,7 @@
 			</div>
 
 			<!--Div that will hold the columnChart-->
-   			 <div id="columnchart_material" style="width: 900px; height: 500px;"></div>
+   			 <div id="columnchart_material" style="width: 1280px; height: 500px;"></div>
    			 
 	    	<!--Div that will hold the areaChart-->
    			 <div id=areaChart_div style="width: 900px; height: 500px;"></div>
@@ -30,7 +34,7 @@
     		<div id="series_chart_div" style="width: 800px; height: 600px;">
     		</div>
     		-->
-		</div>
+		<!--  </div>-->
 	</div>
 
 <script type="text/javascript" src="public/javascripts/index.js"></script>
