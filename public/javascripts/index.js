@@ -26,7 +26,9 @@ $(document).ready(function(){
 	      //alert(JSON.stringify(maps[0].date));
 
 	      //drawAreaChart(map);
-	      drawColumnChart(maps) 
+	      drawColumnChart(maps);
+	      drawColumnChartHK(maps);
+
 	    }
 	  }
 });
@@ -58,7 +60,9 @@ function weeklyOnclick(){
 	      //alert(JSON.stringify(maps[0].table1));
 
 	      //drawAreaChart(map);
-	      drawColumnChart(maps) 
+	      drawColumnChart(maps); 
+	      drawColumnChartHK(maps);
+
 	    }
 	  }
 }
@@ -93,7 +97,9 @@ function monthlyOnclick(){
 	      //alert(JSON.stringify(maps[0].table1));
 
 	      //drawAreaChart(map);
-	      drawColumnChart(maps) 
+	      drawColumnChart(maps); 
+	      drawColumnChartHK(maps);
+
 	    }
 	  }
 }
@@ -125,7 +131,8 @@ function  allOnclick(){
 	      //alert(JSON.stringify(maps[0].table1));
 
 	      //drawAreaChart(map);
-	      drawColumnChart(maps) 
+	      drawColumnChart(maps);
+	      drawColumnChartHK(maps);
 	    }
 	  }
 }
@@ -145,36 +152,30 @@ function  allOnclick(){
       
       
       google.setOnLoadCallback(drawColumnChart);
-      
+      google.setOnLoadCallback(drawColumnChartHK);
+
      
 
       
       
       function drawColumnChart(maps) {
-			
     	var array = [];
     	var i;
-      	array[0] = ['日期', '买入卖出总共成交额(million RMB)', '买入成交额(million RMB)', '卖出成交额(million RMB)'];
+      	array[0] = ['日期', '买入卖出总共成交额(million RMB)', '买入成交额(million RMB)', '卖出成交额(million RMB)', { role: 'style' }];
       	for (i = 0; i < maps.length; i++) {
       		daily = maps[i];
       		var d = new Date(daily.date);
       		var month = d.getMonth() + 1;
 
-      		array[i+1] = [d.getFullYear()+"/"+month+"/"+ d.getDate()+'', daily.table1['买入及卖出成交额 (RMB mil)'], daily.table1['     买入成交额 (RMB mil)'], daily.table1['     卖出成交额 (RMB mil)'] ];
+      		array[i+1] = [d.getFullYear()+"/"+month+"/"+ d.getDate()+'', daily.table1['买入及卖出成交额 (RMB mil)'], daily.table1['     买入成交额 (RMB mil)'], daily.table1['     卖出成交额 (RMB mil)'], 'gold' ];
       	}
 
       		var data = google.visualization.arrayToDataTable(array);
 	        var options = {
 	          chart: {
-	            title: '沪股通-每周买入卖出额',
-	            //subtitle: 'Sales, Expenses, and Profit: 2014-2017',
+	            title: '沪股通-买入卖出额',
+	            subtitle: '资金一路向北',
 	          },
-//	          axes: {
-//	            x: {
-//	              0: { side: 'top', label: 'White to move'} // Top x-axis.
-//	            }
-//	          },
-//	          bar: { groupWidth: "90%" }
 	          chartArea:{left:20,top:0,width:'100%',height:'100%'},
 	          trendlines: {
 	              0: {
@@ -188,11 +189,54 @@ function  allOnclick(){
 	            }
 	        };
 	
-	        var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
+	        var chart = new google.charts.Bar(document.getElementById('columnchart_2SH'));
 	
 	        chart.draw(data, options);
-	      
       	}
+      
+      function drawColumnChartHK(maps) {
+      	var arrayHK = [];
+      	var i;
+      	arrayHK[0] = ['日期', '买入卖出总共成交额(million HKD)', '买入成交额(million HKD)', '卖出成交额(million HKD)'];
+        	for (i = 0; i < maps.length; i++) {
+        		dailyHK = maps[i];
+        		var d = new Date(dailyHK.date);
+        		var month = d.getMonth() + 1;
+
+        		arrayHK[i+1] = [d.getFullYear()+"/"+month+"/"+ d.getDate()+'', dailyHK.table3['买入及卖出成交额(HKD mil)'], dailyHK.table3['     买入成交额 (HKD mil)'], dailyHK.table3['     卖出成交额 (HKD mil)']];
+        	}
+
+        		var data = google.visualization.arrayToDataTable(arrayHK);
+  	        var options = {
+  	          chart: {
+  	            title: '港股通-买入卖出额',
+  	            subtitle: '资金一路向南',
+  	          },
+//  	          axes: {
+//  	            x: {
+//  	              0: { side: 'top', label: 'White to move'} // Top x-axis.
+//  	            }
+//  	          },
+//  	          bar: { groupWidth: "90%" }
+  	          chartArea:{left:20,top:0,width:'100%',height:'100%'},
+  	          trendlines: {
+  	              0: {
+  	                type: 'linear',
+  	                color: 'green',
+  	                lineWidth: 3,
+  	                opacity: 0.3,
+  	                showR2: true,
+  	                visibleInLegend: true
+  	              }
+  	            }
+  	        };
+  	
+  	        var chart = new google.charts.Bar(document.getElementById('columnchart_2HK'));
+  	
+  	        chart.draw(data, options);
+        	}
+      
+      
       
       
       
