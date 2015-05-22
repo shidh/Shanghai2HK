@@ -1,8 +1,12 @@
 $(function () {
+	var d = new Date("2015-04-01");
     $('#datetimepicker6').datetimepicker({format: 'YYYY/MM/DD'});
     $('#datetimepicker7').datetimepicker({format: 'YYYY/MM/DD'});
+    $('#datetimepicker6').data("DateTimePicker").minDate(d);
+
     $("#datetimepicker6").on("dp.change", function (e) {
         $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
+        
     });
     $("#datetimepicker7").on("dp.change", function (e) {
         $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
