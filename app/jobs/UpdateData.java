@@ -40,7 +40,7 @@ public class UpdateData extends Job {
 	private Date checkDate = new Date();
 
 	public void initDB(){
-		Logger.info("start to init DB");
+		Logger.info("start to init DB "+ new Date());
 		List<Date> dates = new ArrayList<Date>();
 		Calendar cal = Calendar.getInstance();
 		

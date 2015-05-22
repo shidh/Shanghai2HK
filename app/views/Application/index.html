@@ -11,24 +11,7 @@
             
   
 	<!--
-		    	<input type='text' class="form-control" placeholder="输入时间" name="time" data-date-format="YYYY-MM-DD HH:mm" id='datepicker' 
-		    	value="2015-05-26 11:11"/>
-		    	<span class="input-group-addon">
-					<span class="glyphicon glyphicon-calendar"></span>
-				</span>
-		    	<script type="text/javascript">
-		            $(function () {
-		                $('#datepicker').datetimepicker();
-		            });
-		        </script>
-	 -->	       
-	 <div class="row-fluid"> 
-	 
-	        <button type="submit" class="btn btn-primary " onclick="weeklyOnclick();">最近一周</button>
-			<button type="submit" class="btn btn-primary " onclick="monthlyOnclick();">最近一月</button>
-			<button type="submit" class="btn btn-primary " onclick="allOnclick();">全部</button>
-
-			<div class="input-group date " id="datetimepicker1">
+		    <div class="input-group date " id="datetimepicker1">
 	      		 <input type="text" class="form-control" placeholder="输入结束日期" value="" id="dpd1">
 		            <span class="input-group-addon">
 						<span class="glyphicon glyphicon-calendar">
@@ -42,8 +25,41 @@
 				</span>			
 			
 			</div>
-		</div>
-
+				
+	 -->	 
+	 <div class="container">     
+			<div class="row-fluid">
+			
+			    <button type="submit" class="btn btn-primary col-md-1 " onclick="weeklyOnclick();">最近一周</button>
+			    
+				<button type="submit" class="btn btn-primary col-md-1 " onclick="monthlyOnclick();">最近一月</button>
+				
+				<button type="submit" class="btn btn-primary col-md-1 " onclick="allOnclick();">全部</button>
+			    <div class='col-md-3'>
+			        <div class="form-group">
+			            <div class='input-group date' id='datetimepicker6'>
+			                <input type='text' class="form-control" id='datetimepickerFrom' />
+			                <span class="input-group-addon">
+			                    <span class="glyphicon glyphicon-calendar"></span>
+			                </span>
+			            </div>
+			        </div>
+			    </div>
+			    <div class='col-md-3'>
+			        <div class="form-group">
+			            <div class='input-group date' id='datetimepicker7'>
+			                <input type='text' class="form-control" id='datetimepickerTo' />
+			                <span class="input-group-addon">
+			                    <span class="glyphicon glyphicon-calendar"></span>
+			                </span>
+			            </div>
+			        </div>
+			    </div>
+				
+				<button type="submit" class="btn btn-primary col-md-1 " onclick="selectOnclick();">选择</button>
+				    
+			</div>
+		</div> 		
 		
 			<hr>
 			<!--Div that will hold the progress bar -->

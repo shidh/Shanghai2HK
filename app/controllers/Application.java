@@ -5,6 +5,7 @@ import play.mvc.*;
 
 import java.io.IOException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -92,28 +93,31 @@ public class Application extends Controller {
     }
     
     
-    public static void DatesBetween() {
+    
+    public static void datesBetween(String from, String to) {
 		Gson gson = new Gson();
-	    Calendar cal = Calendar.getInstance();
-	
-		int statsCount = (int) DailyStat.count();
-		//List<DailyStat> DailyStats = DailyStat.all().from(statsCount-5).fetch(5);
+		Date start = new Date();
+		Date end = new Date();
+		Calendar cal = Calendar.getInstance();
 	
 		List<DailyStat> dailyStats = new ArrayList<DailyStat>();
 		List<Date> dates = new ArrayList<Date>();
 		
-//		cal.set(Calendar.YEAR, 2015);
-//		cal.set(Calendar.MONTH, Calendar.MAY);
-//		cal.set(Calendar.DAY_OF_MONTH, 13);	
-//		Date startDate = cal.getTime();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+		try {
+			start = formatter.parse(from);
+			end = formatter.parse(to);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		cal.setTime(start);
 
-		cal.add(Calendar.DATE, -7);
+		//return the dates "between" the start and end dates, exclusively.
+		//while (cal.getTime().before(end)) {
 		
-		//today
-		Date endDate = new Date();
-	
-		
-		while (cal.getTime().before(endDate)) {
+		//return the dates "between" the start and end dates, inclusively 
+		while (!cal.getTime().after(end)) {
 		    dates.add(cal.getTime());
 		    cal.add(Calendar.DATE, 1);
 		}
@@ -135,6 +139,9 @@ public class Application extends Controller {
 			renderHtml("empty");
 		}
     }
+    
+    
+    
     
     public static void stocks() {
     	Gson gson = new Gson();

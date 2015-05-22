@@ -1,28 +1,13 @@
-var nowTemp = new Date();
-var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
- 
-var checkin = $('#dpd1').datetimepicker({
-  onRender: function(date) {
-    return date.valueOf() < now.valueOf() ? 'disabled' : '';
-  }
-}).on('changeDate', function(ev) {
-  if (ev.date.valueOf() > checkout.date.valueOf()) {
-    var newDate = new Date(ev.date)
-    newDate.setDate(newDate.getDate() + 1);
-    checkout.setValue(newDate);
-  }
-  checkin.hide();
-  $('#dpd2')[0].focus();
-}).data('datepicker');
-var checkout = $('#dpd2').datetimepicker({
-  onRender: function(date) {
-    return date.valueOf() <= checkin.date.valueOf() ? 'disabled' : '';
-  }
-}).on('changeDate', function(ev) {
-  checkout.hide();
-}).data('datepicker');
-
-
+$(function () {
+    $('#datetimepicker6').datetimepicker({format: 'YYYY/MM/DD'});
+    $('#datetimepicker7').datetimepicker({format: 'YYYY/MM/DD'});
+    $("#datetimepicker6").on("dp.change", function (e) {
+        $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
+    });
+    $("#datetimepicker7").on("dp.change", function (e) {
+        $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
+    });
+});
 
 $(document).ready(function(){
 	if (window.XMLHttpRequest)
@@ -34,7 +19,7 @@ $(document).ready(function(){
 	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
 	  }
 
-	var map;
+	var maps;
 	$("div#progressBar").show();
 	
 	xmlhttp.open("GET","Application/weekly",true);
@@ -68,7 +53,7 @@ function weeklyOnclick(){
 	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
 	  }
 
-	var map;
+	var maps;
 	$("div#progressBar").show();
 	
 	xmlhttp.open("GET","Application/weekly",true);
@@ -105,7 +90,7 @@ function monthlyOnclick(){
 	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
 	  }
 
-	var map;
+	var maps;
 	$("div#progressBar").show();
 	
 	xmlhttp.open("GET","Application/monthly",true);
@@ -129,7 +114,7 @@ function monthlyOnclick(){
 	  }
 }
 
-function  allOnclick(){
+function allOnclick(){
 	if (window.XMLHttpRequest)
 	  {// code for IE7+, Firefox, Chrome, Opera, Safari
 	  xmlhttp=new XMLHttpRequest();
@@ -139,7 +124,7 @@ function  allOnclick(){
 	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
 	  }
 
-	var map;
+	var maps;
 	$("div#progressBar").show();
 	
 	xmlhttp.open("GET","Application/all",true);
@@ -159,6 +144,39 @@ function  allOnclick(){
 	      drawColumnChart(maps);
 	      drawColumnChartHK(maps);
 	    }
+	  }
+}
+
+
+function selectOnclick(){
+	if (window.XMLHttpRequest)
+	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttp=new XMLHttpRequest();
+	  }
+	else
+	  {// code for IE6, IE5
+	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+
+	//TODO get the dates
+	
+	var maps;
+	$("div#progressBar").show();
+	
+	xmlhttp.open("GET","Application/datesBetween?from="+document.getElementById("datetimepickerFrom").value +"&"+
+												 "to="+document.getElementById("datetimepickerTo").value 
+					  , true);
+	alert(document.getElementById("datetimepickerFrom").value);
+	xmlhttp.send();
+	
+	xmlhttp.onreadystatechange=function()
+	  {
+	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	    {
+		  maps=JSON.parse(xmlhttp.responseText);
+	      $("div#progressBar").hide();
+	      drawColumnChart(maps);
+	      drawColumnChartHK(maps);	    }
 	  }
 }
 
