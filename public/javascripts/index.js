@@ -170,7 +170,7 @@ function selectOnclick(){
 	xmlhttp.open("GET","Application/datesBetween?from="+document.getElementById("datetimepickerFrom").value +"&"+
 												 "to="+document.getElementById("datetimepickerTo").value 
 					  , true);
-	alert(document.getElementById("datetimepickerFrom").value);
+	//alert(document.getElementById("datetimepickerFrom").value);
 	xmlhttp.send();
 	
 	xmlhttp.onreadystatechange=function()

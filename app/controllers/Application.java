@@ -28,7 +28,7 @@ public class Application extends Controller {
     	//List<DailyStat> DailyStats = DailyStat.all().fetch(5);
 
     	int statsCount = (int) DailyStat.count();
-    	List<DailyStat> dailyStats = DailyStat.all().from(statsCount-10).fetch(5);
+    	List<DailyStat> dailyStats = DailyStat.all().from(statsCount-5).fetch(5);
 		
 		
 		
