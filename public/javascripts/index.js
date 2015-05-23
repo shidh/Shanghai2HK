@@ -76,6 +76,7 @@ function weeklyOnclick(){
 	      //drawAreaChart(map);
 	      drawColumnChart(maps); 
 	      drawColumnChartHK(maps);
+	      drawBaidu(maps)
 
 	    }
 	  }
@@ -149,6 +150,7 @@ function allOnclick(){
 	      drawColumnChartHK(maps);
 	    }
 	  }
+	
 }
 
 
@@ -188,21 +190,88 @@ function selectOnclick(){
  * 
  */
  // Load the Visualization API and the piechart package.
-      google.load('visualization', '1.1', {'packages':['corechart',"bar"]});
+google.load('visualization', '1.1', {'packages':['corechart',"bar"]});
 
 
-      // Set a callback to run when the Google Visualization API is loaded.
-      google.setOnLoadCallback(drawSeriesChart);
-      
-      
-      google.setOnLoadCallback(drawAreaChart);
-      
-      
-      google.setOnLoadCallback(drawColumnChart);
-      google.setOnLoadCallback(drawColumnChartHK);
+// Set a callback to run when the Google Visualization API is loaded.
+google.setOnLoadCallback(drawSeriesChart);
+  
+  
+google.setOnLoadCallback(drawAreaChart);
+  
+  
+google.setOnLoadCallback(drawColumnChart);
+google.setOnLoadCallback(drawColumnChartHK);
+google.setOnLoadCallback(drawPieChart);
 
-     
+ 
+  
+// 路径配置
+require.config({
+   paths: {
+       echarts: 'http://echarts.baidu.com/build/dist'
+   }
+});
+   
+// 使用
+function drawBaidu(maps){
+   	require(
+   	    [
+   	       	'echarts',
+   	        'echarts/chart/bar' // 使用柱状图就加载bar模块，按需加载
+   	    ],
 
+    function (ec) {
+    // 基于准备好的dom，初始化echarts图表
+    var myChart = ec.init(document.getElementById('main')); 
+    var option = {
+	  toolbox: {
+	        show : true,
+	        orient: 'vertical',
+	        x: 'right',
+	        y: 'center',
+	        feature : {
+	            mark : {show: true},
+	            dataView : {show: true, readOnly: false},
+	            magicType : {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+	            restore : {show: true},
+	            saveAsImage : {show: true}
+	        }
+	    },
+	    calculable : true,
+        tooltip: {
+            show: true
+        },
+        legend: {
+            data:['销量']
+        },
+        xAxis : [
+            {
+                type : 'category',
+                data : ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+            }
+        ],
+        yAxis : [
+            {
+                type : 'value'
+            }
+        ],
+        series : [
+            {
+                "name":"销量",
+                "type":"bar",
+                "data":[5, 20, 40, 10, 10, 20]
+            }
+        ]
+    };
+
+    // 为echarts对象加载数据 
+   	myChart.setOption(option); 
+   	}
+   	);
+}
+
+   
       
       
       function drawColumnChart(maps) {
@@ -305,6 +374,33 @@ function selectOnclick(){
           var chart = new google.visualization.AreaChart(document.getElementById('areaChart_div'));
           chart.draw(data, options);
         }
+      
+      
+      
+      
+      
+      function drawPieChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Task', 'Hours per Day'],
+          ['Work',     11],
+          ['Eat',      2],
+          ['Commute',  2],
+          ['Watch TV', 2],
+          ['Sleep',    7]
+        ]);
+
+        var options = {
+          title: 'My Daily Activities',
+          is3D: true,
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
+        chart.draw(data, options);
+      }
+      
+      
+      
+      
       
       
       function drawSeriesChart(map) {

@@ -1,6 +1,9 @@
 #{extends 'main.html' /}
 #{set title:'Home' /}
 
+
+
+
 	<div class="container">
 		<!--<div class="col-md-8">-->
 		    #{list items:DailyStats, as:'oneDay'}
@@ -8,8 +11,69 @@
 		    
 						${oneDay.table1.get("买入及卖出成交额 (RMB mil)")}
             #{/list}
-            
-  
+       <!--  
+        <div class="alert alert-info">...</div>
+	-->
+		<div class="alert alert-success">
+
+			<div class="bs-docs-example">
+              <div class="accordion" id="accordion2">
+                <div class="accordion-group">
+                  <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne" style="font-size: 150%;">
+                      目的
+                    </a>
+                  </div>
+                  <div id="collapseOne" class="accordion-body in collapse" style="height: auto;">
+                    <div class="accordion-inner">
+                    沪港通（Shanghai-Hong Kong Stock Connect），于2014年11月17日开通，是中国上海证券交易所、香港交易所、中国证券登记结算有限责任公司及香港中央结算有限公司联合开展的沪港股票市场交易互联互通机制试点。
+                    沪港通由上海证券交易所和香港交易所建立技术连接，使中国内地和香港投资者允许通过当地证券公司或者经纪商买卖规定范围内的对方交易所上市的股票。</br>
+                   	2015年1月05日，李博士在深圳视察时说“沪港通后应该有深港通”，今年底之前很有希望开通深港通。</br>
+                    2015年3月27日，证监会发布《公开募集证券投资基金参与沪港通交易指引》,公募基金可投资沪港通。从图也能看出，成交量暴增。</br>
+                    2015年5月22日，中国证监会与香港证监会开展内地与香港基金互认工作，同时发布香港互认基金管理暂行规定，自7月1日起实行。</br>
+                    综上，在上海取代香港成为金融中心和深港一体化完成之前，香港仍然是大陆和外资对接的重要接口，沪港通/深港通数据对本轮牛市有参考意义。
+                    </div>
+                  </div>
+                </div>
+                <hr>
+                
+                <div class="accordion-group">
+                  <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo" style="font-size: 150%;">
+                      数据
+                    </a>
+                  </div>
+                  <div id="collapseTwo" class="accordion-body collapse">
+                    <div class="accordion-inner">
+					数据均取自香港证券交易所官网（HKEx），由于2015年4月1日之后其官网才提供了web页面数据（之前是PDF）目前只提供从2015年4月1日开始的数据。</br>
+					注意：</br>
+					     1: 由于某些日子沪股通会暂停开放，所以有些日期是没数据的。</br>
+						 2: 每天服务器后台会在收盘后自动抓取香港证券交易所官网的当日最新数据。</br>
+						 3: 画图工具调用了Google的API，由于众所周知的原因在天朝多半看不到图（需要开VPN）。Thank you GFW!
+                    </div>
+                  </div>
+                </div>
+                 <hr>
+                  
+                <div class="accordion-group">
+                  <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree" style="font-size: 150%;">
+                      关于
+                    </a>
+                  </div>
+                  <div id="collapseThree" class="accordion-body collapse">
+                    <div class="accordion-inner">
+                    由于只花了2个周末的空闲时间，目前界面和功能都很粗糙。有时间的话，我打算陆续加上这些功能：</br>
+                    1: 用国内可以稳定加载的API替换Google画图API,目前有几个备选了</br>
+                    2: 添加个股数据，每日成交量前10名个股</br>
+                    3: 加载一个大盘指数的K线图，方便观察港股通和A股的关系</br>
+					如果有任何建议可邮箱联系我：shidenghui#gmail.com</br>
+                    </div>
+                  </div>
+                </div>
+              </div>
+       	 </div>
+  </div>
 	<!--
 		    <div class="input-group date " id="datetimepicker1">
 	      		 <input type="text" class="form-control" placeholder="输入结束日期" value="" id="dpd1">
@@ -72,20 +136,29 @@
 			</div>
 
 			<!--Div that will hold the columnChart-->
-   			 <div id="columnchart_2SH" style="width: 1208px; height: 400px;"></div>
+   			 <div id="columnchart_2SH" style="width: 1208px; height: 400px; margin: 20px;"></div>
+   			 
+   			 
+   			 
    			 
    			<!--Div that will hold the columnChart-->
-   			 <div id="columnchart_2HK" style="width: 1208px; height: 400px;"></div>
+   			 <div id="columnchart_2HK" style="width: 1208px; height: 400px; margin: 20px;"></div>
    			 
 	    	<!--Div that will hold the areaChart
    			 <div id=areaChart_div style="width: 1280px; height: 500px;"></div>
    			 -->
    			 
     		<!--Div that will hold the BubbleChart
-    		<div id="series_chart_div" style="width: 800px; height: 600px;">
-    		</div>
+    		<div id="series_chart_div" style="width: 800px; height: 600px;"></div>
+    		<div id="piechart_3d" style="width: 1208px; height: 500px;"></div>
+    		
+    		
+    		<div id="main" style="height:400px"></div>
+    		
     		-->
-		<!--  </div>-->
+		
+		
+		
 	</div>
 
 <script type="text/javascript" src="public/javascripts/index.js"></script>

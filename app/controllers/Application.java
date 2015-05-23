@@ -181,6 +181,111 @@ public class Application extends Controller {
 	    DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 	    return( dateFormat.format(date));
 	}
-
+	
+	
+/**
+	[
+	   {
+	      "date":"May 21, 2015 12:00:00 AM",
+	      "dailyRanking":"1",
+	      "stockCode":"600585",
+	      "stockName":"海螺水泥　　　　",
+	      "buying":332634698,
+	      "selling":117690007,
+	      "totalAmount":450324705,
+	      "id":721
+	   },
+	   {
+	      "date":"May 21, 2015 12:00:00 AM",
+	      "dailyRanking":"2",
+	      "stockCode":"601318",
+	      "stockName":"中国平安　　　　",
+	      "buying":252246457,
+	      "selling":150704795,
+	      "totalAmount":402951252,
+	      "id":722
+	   },
+	   {
+	      "date":"May 21, 2015 12:00:00 AM",
+	      "dailyRanking":"3",
+	      "stockCode":"600881",
+	      "stockName":"亚泰集团　　　　",
+	      "buying":3045062,
+	      "selling":287808504,
+	      "totalAmount":290853566,
+	      "id":723
+	   },
+	   {
+	      "date":"May 21, 2015 12:00:00 AM",
+	      "dailyRanking":"4",
+	      "stockCode":"600519",
+	      "stockName":"贵州茅台　　　　",
+	      "buying":219618533,
+	      "selling":20340768,
+	      "totalAmount":239959301,
+	      "id":724
+	   },
+	   {
+	      "date":"May 21, 2015 12:00:00 AM",
+	      "dailyRanking":"5",
+	      "stockCode":"600887",
+	      "stockName":"伊利股份　　　　",
+	      "buying":82591815,
+	      "selling":101094727,
+	      "totalAmount":183686542,
+	      "id":725
+	   },
+	   {
+	      "date":"May 21, 2015 12:00:00 AM",
+	      "dailyRanking":"6",
+	      "stockCode":"600036",
+	      "stockName":"招商银行　　　　",
+	      "buying":122343758,
+	      "selling":54881489,
+	      "totalAmount":177225247,
+	      "id":726
+	   },
+	   {
+	      "date":"May 21, 2015 12:00:00 AM",
+	      "dailyRanking":"7",
+	      "stockCode":"600009",
+	      "stockName":"上海机场　　　　",
+	      "buying":0,
+	      "selling":176888372,
+	      "totalAmount":176888372,
+	      "id":727
+	   },
+	   {
+	      "date":"May 21, 2015 12:00:00 AM",
+	      "dailyRanking":"8",
+	      "stockCode":"601398",
+	      "stockName":"工商银行　　　　",
+	      "buying":128868131,
+	      "selling":35873252,
+	      "totalAmount":164741383,
+	      "id":728
+	   },
+	   {
+	      "date":"May 21, 2015 12:00:00 AM",
+	      "dailyRanking":"9",
+	      "stockCode":"600030",
+	      "stockName":"中信证券　　　　",
+	      "buying":117708186,
+	      "selling":25950504,
+	      "totalAmount":143658690,
+	      "id":729
+	   },
+	   {
+	      "date":"May 21, 2015 12:00:00 AM",
+	      "dailyRanking":"10",
+	      "stockCode":"601166",
+	      "stockName":"兴业银行　　　　",
+	      "buying":108891638,
+	      "selling":29678619,
+	      "totalAmount":138570257,
+	      "id":730
+	   }
+	]
+**/
 
 }
