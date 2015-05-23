@@ -26,7 +26,7 @@ $(document).ready(function(){
 	var maps;
 	$("div#progressBar").show();
 	
-	xmlhttp.open("GET","Application/weekly",true);
+	xmlhttp.open("GET","Application/monthly",true);
 	xmlhttp.send();
 	
 	xmlhttp.onreadystatechange=function()
