@@ -1,3 +1,6 @@
+
+
+
 $(function () {
 	var d = new Date("2015-04-01");
     $('#datetimepicker6').datetimepicker({format: 'YYYY/MM/DD'});
@@ -40,8 +43,10 @@ $(document).ready(function(){
 	      //alert(JSON.stringify(maps[0].date));
 
 	      //drawAreaChart(map);
-	      drawColumnChart(maps);
-	      drawColumnChartHK(maps);
+	      //drawColumnChart(maps);
+	      //drawColumnChartHK(maps);
+	      drawBaidu(maps);
+	      drawBaiduHK(maps);
 
 	    }
 	  }
@@ -74,10 +79,10 @@ function weeklyOnclick(){
 	      //alert(JSON.stringify(maps[0].table1));
 
 	      //drawAreaChart(map);
-	      drawColumnChart(maps); 
-	      drawColumnChartHK(maps);
-	      drawBaidu(maps)
-
+	      //drawColumnChart(maps); 
+	      //drawColumnChartHK(maps);
+	      drawBaidu(maps);
+	      drawBaiduHK(maps);
 	    }
 	  }
 }
@@ -112,9 +117,10 @@ function monthlyOnclick(){
 	      //alert(JSON.stringify(maps[0].table1));
 
 	      //drawAreaChart(map);
-	      drawColumnChart(maps); 
-	      drawColumnChartHK(maps);
-
+	      //drawColumnChart(maps); 
+	      //drawColumnChartHK(maps);
+	      drawBaidu(maps);
+	      drawBaiduHK(maps);
 	    }
 	  }
 }
@@ -146,8 +152,9 @@ function allOnclick(){
 	      //alert(JSON.stringify(maps[0].table1));
 
 	      //drawAreaChart(map);
-	      drawColumnChart(maps);
-	      drawColumnChartHK(maps);
+	      //drawColumnChart(maps);
+	      //drawColumnChartHK(maps);
+	      
 	    }
 	  }
 	
@@ -181,8 +188,11 @@ function selectOnclick(){
 	    {
 		  maps=JSON.parse(xmlhttp.responseText);
 	      $("div#progressBar").hide();
-	      drawColumnChart(maps);
-	      drawColumnChartHK(maps);	    }
+	      //drawColumnChart(maps);
+	      //drawColumnChartHK(maps);
+	      drawBaidu(maps);
+	      drawBaiduHK(maps);
+	      }
 	  }
 }
 
@@ -190,19 +200,19 @@ function selectOnclick(){
  * 
  */
  // Load the Visualization API and the piechart package.
-google.load('visualization', '1.1', {'packages':['corechart',"bar"]});
-
-
-// Set a callback to run when the Google Visualization API is loaded.
-google.setOnLoadCallback(drawSeriesChart);
-  
-  
-google.setOnLoadCallback(drawAreaChart);
-  
-  
-google.setOnLoadCallback(drawColumnChart);
-google.setOnLoadCallback(drawColumnChartHK);
-google.setOnLoadCallback(drawPieChart);
+//google.load('visualization', '1.1', {'packages':['corechart',"bar"]});
+//
+//
+//// Set a callback to run when the Google Visualization API is loaded.
+//google.setOnLoadCallback(drawSeriesChart);
+//  
+//  
+//google.setOnLoadCallback(drawAreaChart);
+//  
+//  
+//google.setOnLoadCallback(drawColumnChart);
+//google.setOnLoadCallback(drawColumnChartHK);
+//google.setOnLoadCallback(drawPieChart);
 
  
   
@@ -213,18 +223,67 @@ require.config({
    }
 });
    
+
+
+
 // 使用
 function drawBaidu(maps){
    	require(
    	    [
    	       	'echarts',
-   	        'echarts/chart/bar' // 使用柱状图就加载bar模块，按需加载
+   	        'echarts/chart/bar', // 使用柱状图就加载bar模块，按需加载            
+            'echarts/chart/line',
+            'echarts/chart/scatter',
+            'echarts/chart/k',
+            'echarts/chart/pie',
+//            'echarts/chart/radar',
+//            'echarts/chart/force',
+//            'echarts/chart/chord',
+//            'echarts/chart/gauge',
+//            'echarts/chart/funnel',
+//            'echarts/chart/eventRiver',
+//            'echarts/chart/venn',
+//            'echarts/chart/treemap'
    	    ],
 
     function (ec) {
     // 基于准备好的dom，初始化echarts图表
-    var myChart = ec.init(document.getElementById('main')); 
+    var myChart = ec.init(document.getElementById('main'), 'macarons'); 
+
+    $.getScript("/public/javascripts/shine.js", function(){
+    	   // Use anything defined in the loaded script...
+    	   myChart.setTheme(getTheme());
+    });
+
+  	var dates = [];
+  	var total = [];
+  	var buy = [];
+  	var sell = [];
+
+  	for (i = 0; i < maps.length; i++) {
+  		daily = maps[i];
+  		var d = new Date(daily.date);
+  		var month = d.getMonth() + 1;
+  		dates.push(d.getFullYear()+"/"+month+"/"+ d.getDate()+'');  
+  		total.push(daily.table1['买入及卖出成交额 (RMB mil)']);
+  		buy.push(daily.table1['     买入成交额 (RMB mil)']);
+  		sell.push(daily.table1['     卖出成交额 (RMB mil)']);
+  		//array[i+1] = [d.getFullYear()+"/"+month+"/"+ d.getDate()+'', daily.table1['买入及卖出成交额 (RMB mil)'], daily.table1['     买入成交额 (RMB mil)'], daily.table1['     卖出成交额 (RMB mil)'], 'gold' ];
+  		
+  	}
     var option = {
+		title : {
+	        text: '沪股通-买入卖出额',
+	        subtext: '资金一路向北'
+	    },
+	    tooltip : {
+	        trigger: 'axis',
+	        show: true
+
+	    },
+	    legend: {
+	        data:['买入及卖出成交额 (million RMB)','买入成交额 (million RMB)','卖出成交额 (million RMB)']
+	    },
 	  toolbox: {
 	        show : true,
 	        orient: 'vertical',
@@ -238,31 +297,70 @@ function drawBaidu(maps){
 	            saveAsImage : {show: true}
 	        }
 	    },
-	    calculable : true,
-        tooltip: {
-            show: true
-        },
-        legend: {
-            data:['销量']
-        },
         xAxis : [
-            {
-                type : 'category',
-                data : ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
-            }
-        ],
-        yAxis : [
-            {
-                type : 'value'
-            }
-        ],
-        series : [
-            {
-                "name":"销量",
-                "type":"bar",
-                "data":[5, 20, 40, 10, 10, 20]
-            }
-        ]
+     	        {
+     	            type : 'category',
+     	            data : dates
+     	        }
+     	    ],
+     	    yAxis : [
+     	        {
+     	            type : 'value'
+     	        }
+     	    ],
+     	    series : [
+     	        {
+     	            name:'买入及卖出总成交额',
+     	            type:'bar',
+     	            //data:[2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3],
+     	            data: total,
+     	            markPoint : {
+     	                data : [
+     	                    {type : 'max', name: '最大值'},
+     	                    {type : 'min', name: '最小值'}
+     	                ]
+     	            },
+     	            markLine : {
+     	                data : [
+     	                    {type : 'average', name: '平均值'}
+     	                ]
+     	            }
+     	        },
+     	        {
+     	            name:'买入成交额',
+     	            type:'bar',
+     	            //data:[2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3],
+     	            data: buy,
+     	            markPoint : {
+     	                data : [
+     	                    {name : '日最高', value : 182.2, xAxis: 7, yAxis: 183, symbolSize:18},
+     	                    {name : '日最低', value : 2.3, xAxis: 11, yAxis: 3}
+     	                ]
+     	            },
+     	            markLine : {
+     	                data : [
+     	                    {type : 'average', name : '平均值'}
+     	                ]
+     	            }
+     	        },
+      	        {
+     	            name:'卖出成交额',
+     	            type:'bar',
+     	            //data:[2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3],
+     	            data: sell,
+     	            markPoint : {
+     	                data : [
+     	                    {name : '日最高', value : 182.2, xAxis: 7, yAxis: 183, symbolSize:18},
+     	                    {name : '日最低', value : 2.3, xAxis: 11, yAxis: 3}
+     	                ]
+     	            },
+     	            markLine : {
+     	                data : [
+     	                    {type : 'average', name : '平均值'}
+     	                ]
+     	            }
+     	        }
+     	    ]
     };
 
     // 为echarts对象加载数据 
@@ -272,6 +370,150 @@ function drawBaidu(maps){
 }
 
    
+
+function drawBaiduHK(maps){
+   	require(
+   	    [
+   	       	'echarts',
+   	        'echarts/chart/bar', // 使用柱状图就加载bar模块，按需加载            
+            'echarts/chart/line',
+            'echarts/chart/scatter',
+            'echarts/chart/k',
+            'echarts/chart/pie',
+//            'echarts/chart/radar',
+//            'echarts/chart/force',
+//            'echarts/chart/chord',
+//            'echarts/chart/gauge',
+//            'echarts/chart/funnel',
+//            'echarts/chart/eventRiver',
+//            'echarts/chart/venn',
+//            'echarts/chart/treemap'
+   	    ],
+
+    function (ec) {
+    // 基于准备好的dom，初始化echarts图表
+    var myChart = ec.init(document.getElementById('mainHK'), 'macarons'); 
+
+    $.getScript("/public/javascripts/shine.js", function(){
+    	   // Use anything defined in the loaded script...
+    	   myChart.setTheme(getTheme());
+    });
+
+  	var dates = [];
+  	var total = [];
+  	var buy = [];
+  	var sell = [];
+
+  	for (i = 0; i < maps.length; i++) {
+  		dailyHK = maps[i];
+  		var d = new Date(dailyHK.date);
+  		var month = d.getMonth() + 1;
+  		dates.push(d.getFullYear()+"/"+month+"/"+ d.getDate()+'');  
+  		total.push(dailyHK.table3['买入及卖出成交额(HKD mil)']);
+  		buy.push(dailyHK.table3['     买入成交额 (HKD mil)']);
+  		sell.push(dailyHK.table3['     卖出成交额 (HKD mil)']);
+  		//array[i+1] = [d.getFullYear()+"/"+month+"/"+ d.getDate()+'', daily.table1['买入及卖出成交额 (RMB mil)'], daily.table1['     买入成交额 (RMB mil)'], daily.table1['     卖出成交额 (RMB mil)'], 'gold' ];
+  	}
+    var option = {
+		title : {
+	        text: '港股通-买入卖出额',
+	        subtext: '资金一路向南'
+	    },
+	    tooltip : {
+	        trigger: 'axis',
+	        show: true
+
+	    },
+	    legend: {
+	        data:['买入及卖出成交额 (million HKD)','买入成交额 (million HKD)','卖出成交额 (million HKD)']
+	    },
+	  toolbox: {
+	        show : true,
+	        orient: 'vertical',
+	        x: 'right',
+	        y: 'center',
+	        feature : {
+	            mark : {show: true},
+	            dataView : {show: true, readOnly: false},
+	            magicType : {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+	            restore : {show: true},
+	            saveAsImage : {show: true}
+	        }
+	    },
+        xAxis : [
+     	        {
+     	            type : 'category',
+     	            data : dates
+     	        }
+     	    ],
+     	    yAxis : [
+     	        {
+     	            type : 'value'
+     	        }
+     	    ],
+     	    series : [
+     	        {
+     	            name:'买入及卖出总成交额',
+     	            type:'bar',
+     	            //data:[2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3],
+     	            data: total,
+     	            markPoint : {
+     	                data : [
+     	                    {type : 'max', name: '最大值'},
+     	                    {type : 'min', name: '最小值'}
+     	                ]
+     	            },
+     	            markLine : {
+     	                data : [
+     	                    {type : 'average', name: '平均值'}
+     	                ]
+     	            }
+     	        },
+     	        {
+     	            name:'买入成交额',
+     	            type:'bar',
+     	            //data:[2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3],
+     	            data: buy,
+     	            markPoint : {
+     	                data : [
+     	                    {name : '日最高', value : 182.2, xAxis: 7, yAxis: 183, symbolSize:18},
+     	                    {name : '日最低', value : 2.3, xAxis: 11, yAxis: 3}
+     	                ]
+     	            },
+     	            markLine : {
+     	                data : [
+     	                    {type : 'average', name : '平均值'}
+     	                ]
+     	            }
+     	        },
+      	        {
+     	            name:'卖出成交额',
+     	            type:'bar',
+     	            //data:[2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3],
+     	            data: sell,
+     	            markPoint : {
+     	                data : [
+     	                    {name : '日最高', value : 182.2, xAxis: 7, yAxis: 183, symbolSize:18},
+     	                    {name : '日最低', value : 2.3, xAxis: 11, yAxis: 3}
+     	                ]
+     	            },
+     	            markLine : {
+     	                data : [
+     	                    {type : 'average', name : '平均值'}
+     	                ]
+     	            }
+     	        }
+     	    ]
+    };
+
+    // 为echarts对象加载数据 
+   	myChart.setOption(option); 
+   	}
+   	);
+}
+
+
+
       
       
       function drawColumnChart(maps) {
@@ -515,6 +757,9 @@ function drawBaidu(maps){
         chart.draw(data, options);
       }
       
-
       
-            
+      
+      
+      
+      
+      
