@@ -154,7 +154,8 @@ function allOnclick(){
 	      //drawAreaChart(map);
 	      //drawColumnChart(maps);
 	      //drawColumnChartHK(maps);
-	      
+	      drawBaidu(maps);
+	      drawBaiduHK(maps);
 	    }
 	  }
 	
@@ -255,6 +256,39 @@ function drawBaidu(maps){
     	   myChart.setTheme(getTheme());
     });
 
+    
+    /*
+ // -------全局通用
+ REFRESH: 'refresh',
+ RESTORE: 'restore',
+ RESIZE: 'resize',
+ CLICK: 'click',
+ DBLCLICK: 'dblclick',
+ HOVER: 'hover',
+ MOUSEOUT: 'mouseout',
+ // -------业务交互逻辑
+ DATA_CHANGED: 'dataChanged',
+ DATA_ZOOM: 'dataZoom',
+ DATA_RANGE: 'dataRange',
+ DATA_RANGE_HOVERLINK: 'dataRangeHoverLink',
+ LEGEND_SELECTED: 'legendSelected',
+ LEGEND_HOVERLINK: 'legendHoverLink',
+ MAP_SELECTED: 'mapSelected',
+ PIE_SELECTED: 'pieSelected',
+ MAGIC_TYPE_CHANGED: 'magicTypeChanged',
+ DATA_VIEW_CHANGED: 'dataViewChanged',
+ TIMELINE_CHANGED: 'timelineChanged',
+ MAP_ROAM: 'mapRoam',
+ */
+// myChart.on(ec.EVENT.CLICK, eConsole);
+// myChart.on(ec.EVENT.DBLCLICK, eConsole);
+// //myChart.on(ecConfig.EVENT.HOVER, eConsole);
+// myChart.on(ec.EVENT.DATA_ZOOM, eConsole);
+// myChart.on(ec.EVENT.LEGEND_SELECTED, eConsole);
+// myChart.on(ec.EVENT.MAGIC_TYPE_CHANGED, eConsole);
+// myChart.on(ec.EVENT.DATA_VIEW_CHANGED, eConsole);
+                     
+    
   	var dates = [];
   	var total = [];
   	var buy = [];
@@ -316,8 +350,8 @@ function drawBaidu(maps){
      	            data: total,
      	            markPoint : {
      	                data : [
-     	                    {type : 'max', name: '最大值'},
-     	                    {type : 'min', name: '最小值'}
+        	                    {type : 'max', name: '成交量最大值'},
+         	                    {type : 'min', name: '成交量最小值'}
      	                ]
      	            },
      	            markLine : {
@@ -333,8 +367,8 @@ function drawBaidu(maps){
      	            data: buy,
      	            markPoint : {
      	                data : [
-     	                    {name : '日最高', value : 182.2, xAxis: 7, yAxis: 183, symbolSize:18},
-     	                    {name : '日最低', value : 2.3, xAxis: 11, yAxis: 3}
+        	                    {type : 'max', name: '买入最大值'},
+         	                    {type : 'min', name: '买入最小值'}
      	                ]
      	            },
      	            markLine : {
@@ -350,8 +384,8 @@ function drawBaidu(maps){
      	            data: sell,
      	            markPoint : {
      	                data : [
-     	                    {name : '日最高', value : 182.2, xAxis: 7, yAxis: 183, symbolSize:18},
-     	                    {name : '日最低', value : 2.3, xAxis: 11, yAxis: 3}
+        	                    {type : 'max', name: '卖出最大值'},
+         	                    {type : 'min', name: '卖出最小值'}
      	                ]
      	            },
      	            markLine : {
@@ -459,8 +493,8 @@ function drawBaiduHK(maps){
      	            data: total,
      	            markPoint : {
      	                data : [
-     	                    {type : 'max', name: '最大值'},
-     	                    {type : 'min', name: '最小值'}
+     	                    {type : 'max', name: '成交量最大值'},
+     	                    {type : 'min', name: '成交量最小值'}
      	                ]
      	            },
      	            markLine : {
@@ -476,8 +510,8 @@ function drawBaiduHK(maps){
      	            data: buy,
      	            markPoint : {
      	                data : [
-     	                    {name : '日最高', value : 182.2, xAxis: 7, yAxis: 183, symbolSize:18},
-     	                    {name : '日最低', value : 2.3, xAxis: 11, yAxis: 3}
+         	                    {type : 'max', name: '买入最大值'},
+         	                    {type : 'min', name: '买入最小值'}
      	                ]
      	            },
      	            markLine : {
@@ -493,8 +527,8 @@ function drawBaiduHK(maps){
      	            data: sell,
      	            markPoint : {
      	                data : [
-     	                    {name : '日最高', value : 182.2, xAxis: 7, yAxis: 183, symbolSize:18},
-     	                    {name : '日最低', value : 2.3, xAxis: 11, yAxis: 3}
+     	                    {type : 'max', name: '卖出最大值'},
+     	                    {type : 'min', name: '卖出最小值'}
      	                ]
      	            },
      	            markLine : {
