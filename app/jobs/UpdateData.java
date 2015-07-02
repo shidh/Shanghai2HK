@@ -55,6 +55,7 @@ public class UpdateData extends Job {
 		Logger.info(setDate(startDate));
 
 
+		//get a data list from 2015.04.01 to today
 		//cal.setTime(startDate);
 		while (!cal.getTime().after(new Date())) {
 		    dates.add(cal.getTime());
@@ -63,7 +64,7 @@ public class UpdateData extends Job {
 		
 		for(Date date: dates){
 			dailyDataHtml = "d"+ setDate(date)+"c.htm";
-			Logger.info(dailyDataHtml);
+			//Logger.info(dailyDataHtml);
 			checkDate = date;
 			doJob();
 		}
@@ -247,7 +248,7 @@ public class UpdateData extends Job {
 		if (bigNumber == null ){
 			return 0;
 		} else{
-			Logger.info("bignumber: "+bigNumber);
+			//Logger.info("bignumber: "+bigNumber);
 			NumberFormat format = NumberFormat.getInstance(Locale.US);
 		    Number number = 0;
 			try {
@@ -256,7 +257,7 @@ public class UpdateData extends Job {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			Logger.info(" "+number);
+			//Logger.info(" "+number);
 	
 			return number;
 		}
