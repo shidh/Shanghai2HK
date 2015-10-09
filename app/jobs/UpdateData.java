@@ -94,7 +94,7 @@ public class UpdateData extends Job {
 			try {
 				//dailyDataHtml = "d"+setDate(checkDate)+"c.htm";
 				doc = Jsoup.connect(baseUrl + dailyDataHtml).get();
-			
+				//System.out.println(baseUrl + dailyDataHtml);
 				Elements tables = doc.select("td.bg3");
 			
 				//Elements tables = doc.select("table");
@@ -125,6 +125,11 @@ public class UpdateData extends Job {
 						        for (int j = 0; j < tds.size(); j++) { // column number
 							    	//System.out.println("column "+j);
 						            trtd[i][j] = tds.get(j).text().trim(); 
+							    	//System.out.println("key "+trtd[i][j]);
+							    	//System.out.println("value "+getNumber(trtd[i][1]));
+
+							    	
+							    	
 						            table1.put(trtd[i][0], getNumber(trtd[i][1]));
 						        }
 						    }
