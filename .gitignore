@@ -22,6 +22,8 @@ test-result
 server.pid
 *.iml
 *.eml
+*.ipr
+*.iws
 data
 .settings
 application.log
